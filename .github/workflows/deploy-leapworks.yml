@@ -31,6 +31,13 @@ jobs:
         env:
           ENV_SELFHOST: ${{ secrets.ENV_SELFHOST }}
 
+      - name: Safety check - LEAPWORKS custom domain fix is present
+        run: |
+          grep -q 'SELFHOST_DOMAIN' alchemy.run.ts \
+            || { echo "alchemy.run.ts is missing the SELFHOST_DOMAIN fix - stopping so seo.leapworks.io isn't removed."; exit 1; }
+          grep -q '^SELFHOST_DOMAIN=' .env.selfhost \
+            || { echo "SELFHOST_DOMAIN is missing from the ENV_SELFHOST secret - stopping."; exit 1; }
+
       - name: Safety check - token can see the account and state store
         run: |
           resp=$(curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
