@@ -249,7 +249,8 @@ const resolveSelfHostAccess = (
         policyId: "SelfHostAllowUsers",
         applicationId: "SelfHostAccess",
         policyName: `open-seo ${stage} self-host users`,
-        applicationName: `open-seo ${stage}`,
+        // LEAPWORKS: friendly name on the Access login page for the custom domain.
+        applicationName: customDomain ? "OpenSEO" : `open-seo ${stage}`,
         // LEAPWORKS: gate the custom domain when SELFHOST_DOMAIN is set.
         domain: customDomain || `${workerName(stage)}.${subdomain}`,
         emails: allowedEmails,
