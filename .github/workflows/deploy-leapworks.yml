@@ -27,9 +27,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Create .env.selfhost from secret
-        run: printf '%s\n' "$ENV_SELFHOST" > .env.selfhost
+        run: |
+          printf '%s\n' "$ENV_SELFHOST" > .env.selfhost
+          if [ -n "$OPENROUTER_MODEL" ]; then
+            printf 'OPENROUTER_MODEL=%s\n' "$OPENROUTER_MODEL" >> .env.selfhost
+          fi
         env:
           ENV_SELFHOST: ${{ secrets.ENV_SELFHOST }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
 
       - name: Safety check - LEAPWORKS custom domain fix is present
         run: |
